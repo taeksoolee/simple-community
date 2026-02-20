@@ -1,0 +1,14 @@
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="text-center">
+    <h1 class="text-4xl font-bold text-gray-800 mb-4">Simple Community</h1>
+    <p class="text-gray-600 mb-8">Rails 8 커뮤니티 게시판</p>
+    <% if Current.user %>
+      <p class="text-lg text-gray-700">환영합니다, <%= Current.user.email_address %>님!</p>
+    <% else %>
+      <div class="space-x-4">
+        <%= link_to "로그인", new_session_path, class: "inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700" %>
+        <%= link_to "회원가입", new_registration_path, class: "inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" %>
+      </div>
+    <% end %>
+  </div>
+</div>
