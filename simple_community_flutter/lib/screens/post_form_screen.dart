@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../core/app_theme.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simple_community_api/simple_community_api.dart';
 
@@ -98,7 +100,7 @@ class _PostFormScreenState extends ConsumerState<PostFormScreen> {
       return CupertinoPageScaffold(
         navigationBar: const CupertinoNavigationBar(
           border: null,
-          middle: Text('게시글 수정', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17)),
+          middle: Text('게시글 수정', style: AppTheme.navBarTitleStyle),
         ),
         child: const Center(child: CupertinoActivityIndicator(radius: 14)),
       );
@@ -107,21 +109,27 @@ class _PostFormScreenState extends ConsumerState<PostFormScreen> {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         border: null,
-        leading: CupertinoButton(
-          padding: EdgeInsets.zero,
+        leading: AppTheme.navBarIconButton(
+          icon: CupertinoIcons.back,
           onPressed: () => context.pop(),
-          child: const Text('취소'),
         ),
         middle: Text(
           isEdit ? '게시글 수정' : '글쓰기',
-          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+          style: AppTheme.navBarTitleStyle,
         ),
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
+          minimumSize: const Size(AppTheme.navBarButtonSize, AppTheme.navBarButtonSize),
           onPressed: _isLoading ? null : _submit,
-          child: _isLoading
-              ? const CupertinoActivityIndicator(radius: 10)
-              : Text(isEdit ? '저장' : '등록'),
+          child: SizedBox(
+            width: AppTheme.navBarButtonSize,
+            height: AppTheme.navBarButtonSize,
+            child: Center(
+              child: _isLoading
+                  ? const CupertinoActivityIndicator(radius: 10)
+                  : Text(isEdit ? '저장' : '등록'),
+            ),
+          ),
         ),
       ),
       child: SafeArea(

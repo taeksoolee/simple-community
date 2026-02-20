@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../core/app_theme.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:simple_community_api/simple_community_api.dart';
@@ -23,20 +25,15 @@ class PostDetailScreen extends ConsumerWidget {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         border: null,
-        leading: CupertinoButton(
-          padding: EdgeInsets.zero,
+        leading: AppTheme.navBarIconButton(
+          icon: CupertinoIcons.back,
           onPressed: () => context.pop(),
-          child: const Icon(CupertinoIcons.back),
         ),
-        middle: const Text(
-          '게시글',
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
-        ),
+        middle: const Text('게시글', style: AppTheme.navBarTitleStyle),
         trailing: postAsync.valueOrNull != null && token != null
-            ? CupertinoButton(
-                padding: EdgeInsets.zero,
+            ? AppTheme.navBarIconButton(
+                icon: CupertinoIcons.pencil,
                 onPressed: () => context.push('/posts/$postId/edit'),
-                child: const Icon(CupertinoIcons.pencil),
               )
             : null,
       ),

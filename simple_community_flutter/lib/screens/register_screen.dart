@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../core/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 import '../providers/api_provider.dart';
@@ -88,15 +90,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         border: null,
-        leading: CupertinoButton(
-          padding: EdgeInsets.zero,
+        leading: AppTheme.navBarIconButton(
+          icon: CupertinoIcons.back,
           onPressed: () => context.pop(),
-          child: const Icon(CupertinoIcons.back),
         ),
-        middle: const Text(
-          '회원가입',
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
-        ),
+        middle: const Text('회원가입', style: AppTheme.navBarTitleStyle),
       ),
       child: SafeArea(
         child: CustomScrollView(

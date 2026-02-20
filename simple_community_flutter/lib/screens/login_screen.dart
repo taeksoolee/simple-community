@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../core/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 import '../providers/api_provider.dart';
@@ -73,12 +75,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(
+      navigationBar: CupertinoNavigationBar(
         border: null,
-        middle: Text(
-          '로그인',
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+        leading: AppTheme.navBarIconButton(
+          icon: CupertinoIcons.back,
+          onPressed: () => context.pop(),
         ),
+        middle: const Text('로그인', style: AppTheme.navBarTitleStyle),
       ),
       child: SafeArea(
         child: CustomScrollView(

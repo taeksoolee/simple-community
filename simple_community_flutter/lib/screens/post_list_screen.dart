@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../core/app_theme.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -28,13 +30,7 @@ class _PostListScreenState extends ConsumerState<PostListScreen> {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         border: null,
-        middle: const Text(
-          'Simple Community',
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 17,
-          ),
-        ),
+        middle: const Text('Simple Community', style: AppTheme.navBarTitleStyle),
         trailing: _NavBarActions(
           onLogin: () => context.push('/login'),
           onLogout: _logout,
@@ -162,17 +158,13 @@ class _NavBarActions extends ConsumerWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (token != null)
-          CupertinoButton(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
+          AppTheme.navBarIconButton(
+            icon: CupertinoIcons.add,
             onPressed: onWrite,
-            child: const Icon(CupertinoIcons.add),
           ),
-        CupertinoButton(
-          padding: EdgeInsets.zero,
+        AppTheme.navBarIconButton(
+          icon: token != null ? CupertinoIcons.square_arrow_right : CupertinoIcons.person_circle,
           onPressed: token != null ? onLogout : onLogin,
-          child: Icon(
-            token != null ? CupertinoIcons.square_arrow_right : CupertinoIcons.person_circle,
-          ),
         ),
       ],
     );
