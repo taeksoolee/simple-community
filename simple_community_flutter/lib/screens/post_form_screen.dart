@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../core/api_error.dart';
 import '../core/app_theme.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simple_community_api/simple_community_api.dart';
@@ -77,7 +78,7 @@ class _PostFormScreenState extends ConsumerState<PostFormScreen> {
       if (mounted) context.go('/');
     } catch (e) {
       setState(() {
-        _error = e.toString().replaceFirst('Exception: ', '');
+        _error = parseApiError(e);
         _isLoading = false;
       });
     } finally {

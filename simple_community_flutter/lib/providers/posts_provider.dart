@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/api_client.dart';
+import '../core/api_error.dart';
 import '../models/post.dart';
 import 'api_provider.dart';
 
@@ -71,7 +72,7 @@ class PostsListNotifier extends StateNotifier<AsyncValue<PostListResponse>> {
         state = AsyncValue.data(result);
       }
     } catch (e, st) {
-      if (_mounted) state = AsyncValue.error(e, st);
+      if (_mounted) state = AsyncValue.error(parseApiError(e), st);
     }
   }
 }

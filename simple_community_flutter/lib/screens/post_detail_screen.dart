@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../core/api_error.dart';
 import '../core/app_theme.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -347,7 +348,7 @@ class _CommentInputState extends ConsumerState<_CommentInput> {
           context: context,
           builder: (ctx) => CupertinoAlertDialog(
             title: const Text('오류'),
-            content: Text('댓글 작성 실패: $e'),
+            content: Text('댓글 작성 실패: ${parseApiError(e)}'),
             actions: [
               CupertinoDialogAction(
                 onPressed: () => Navigator.of(ctx).pop(),
