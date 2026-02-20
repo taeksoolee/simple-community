@@ -34,8 +34,9 @@ out/
 # Database
 *.sqlite3
 *.sqlite3-*
-prisma/*.db
-prisma/*.db-journal
+**/prisma/*.db
+**/prisma/*.db-journal
+**/dev.db
 
 # Rails
 log/
