@@ -49,7 +49,7 @@
 
   <% if comment.comments.any? %>
     <div class="replies">
-      <% comment.comments.includes(:user).order(created_at: :asc).each do |reply| %>
+      <% comment.comments.includes(:user).order(created_at: :desc).each do |reply| %>
         <%= render partial: 'comments/comment', locals: { comment: reply, depth: depth + 1 } %>
       <% end %>
     </div>
