@@ -35,12 +35,14 @@
     </div>
 
     <div id="comments" class="mb-8">
-      <% top_level_comments = @post.comments.where(commentable_type: "Post").includes(:user, :comments).order(created_at: :desc) %>
-      <% if top_level_comments.any? %>
+      <% if @top_level_comments.any? %>
         <div class="space-y-4">
-          <% top_level_comments.each do |comment| %>
+          <% @top_level_comments.each do |comment| %>
             <%= render partial: 'comments/comment', locals: { comment: comment, depth: 0 } %>
           <% end %>
+        </div>
+        <div class="mt-6">
+          <%= paginate @top_level_comments, param_name: :comments_page %>
         </div>
       <% else %>
         <div class="text-center py-12 bg-gray-50 rounded-lg">

@@ -3,11 +3,11 @@ class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
 
   def index
-    @posts = Post.includes(:user).order(created_at: :desc)
+    @posts = Post.includes(:user).order(created_at: :desc).page(params[:page]).per(10)
   end
 
   def show
-    @comments = @post.comments.includes(:user, :comments)
+    @top_level_comments = @post.comments.where(commentable_type: "Post").includes(:user, :comments).order(created_at: :desc).page(params[:comments_page]).per(10)
   end
 
   def new
