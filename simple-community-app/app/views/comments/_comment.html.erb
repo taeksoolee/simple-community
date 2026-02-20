@@ -1,43 +1,43 @@
 <div class="<%= depth > 0 ? 'ml-8 mt-4' : 'mt-4' %> border-l-2 <%= depth > 0 ? 'border-gray-300 pl-4' : 'border-transparent' %>">
-  <div class="bg-white rounded-lg shadow p-4">
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4 border border-gray-200 dark:border-gray-700">
     <div class="flex justify-between items-start">
       <div class="flex-1">
         <div class="flex items-center space-x-2">
-          <span class="text-sm font-medium text-gray-900"><%= comment.user.email_address %></span>
-          <span class="text-xs text-gray-500"><%= comment.created_at.strftime('%Y-%m-%d %H:%M') %></span>
+          <span class="text-sm font-medium text-gray-900 dark:text-gray-100"><%= comment.user.email_address %></span>
+          <span class="text-xs text-gray-500 dark:text-gray-400"><%= comment.created_at.strftime('%Y-%m-%d %H:%M') %></span>
         </div>
-        <p class="mt-2 text-gray-700"><%= simple_format(comment.body) %></p>
+        <p class="mt-2 text-gray-700 dark:text-gray-200"><%= simple_format(comment.body) %></p>
       </div>
       <% if Current.user == comment.user %>
         <%= button_to "삭제", comment_path(comment), method: :delete, 
             data: { confirm: "정말 삭제하시겠습니까?" },
-            class: "ml-4 text-sm text-red-600 hover:text-red-800" %>
+                class: "ml-4 text-sm text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300" %>
       <% end %>
     </div>
 
     <% if Current.user %>
       <div class="mt-3">
         <button data-controller="reply" data-action="click->reply#toggle" data-reply-id-param="<%= comment.id %>"
-                class="text-sm text-indigo-600 hover:text-indigo-800 font-medium">
+                class="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium">
           답글 달기
         </button>
       </div>
 
-      <div id="reply-form-<%= comment.id %>" class="hidden mt-4 bg-gray-50 p-4 rounded-lg" data-controller="form">
+      <div id="reply-form-<%= comment.id %>" class="hidden mt-4 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg border border-gray-200 dark:border-gray-600" data-controller="form">
         <%= form_with url: comments_path, method: :post, class: "space-y-3", data: { action: "submit->form#handleSubmit" } do |form| %>
           <%= hidden_field_tag "comment[commentable_type]", "Comment" %>
           <%= hidden_field_tag "comment[commentable_id]", comment.id %>
           
           <div>
             <%= text_area_tag "comment[body]", nil, rows: 3,
-                class: "block w-full px-4 py-3 rounded-lg border-2 border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200 sm:text-sm resize-none",
+                class: "block w-full px-4 py-3 rounded-lg border-2 border-gray-300 dark:border-gray-600 shadow-sm placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200 sm:text-sm resize-none",
                 placeholder: "답글을 입력하세요...",
                 data: { form_target: "body", action: "blur->form#validateRequired input->form#clearErrorOnInput" } %>
           </div>
           
           <div class="flex justify-end space-x-2">
             <button type="button" data-controller="reply" data-action="click->reply#toggle" data-reply-id-param="<%= comment.id %>"
-                    class="px-4 py-2 border-2 border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition duration-200">
+                    class="px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition duration-200">
               취소
             </button>
             <%= submit_tag "답글 작성", class: "px-4 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-200" %>

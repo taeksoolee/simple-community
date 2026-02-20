@@ -34,7 +34,7 @@ export function PostForm({
           name="title"
           required
           defaultValue={initialTitle}
-          className="block w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 sm:text-sm"
+          className="block w-full px-4 py-3 rounded-lg border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 sm:text-sm"
           placeholder="제목을 입력하세요"
         />
       </div>
@@ -48,7 +48,7 @@ export function PostForm({
           required
           rows={8}
           defaultValue={initialBody}
-          className="block w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 sm:text-sm"
+          className="block w-full px-4 py-3 rounded-lg border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 sm:text-sm"
           placeholder="내용을 입력하세요"
         />
       </div>

@@ -39,10 +39,10 @@ export function FlashProvider() {
       className="fixed top-20 right-4 z-50 w-full max-w-xs flex flex-col gap-2 pointer-events-none [&>*]:pointer-events-auto"
     >
       <div
-        className={`flex items-start gap-3 rounded-lg border px-4 py-3 shadow-lg backdrop-blur bg-white/95 ${
+        className={`flex items-start gap-3 rounded-lg border px-4 py-3 shadow-lg backdrop-blur bg-white/95 dark:bg-gray-800/95 ${
           isNotice
-            ? "border-green-200 text-green-800"
-            : "border-red-200 text-red-800"
+            ? "border-green-200 dark:border-green-800 text-green-800 dark:text-green-200"
+            : "border-red-200 dark:border-red-800 text-red-800 dark:text-red-200"
         }`}
         style={{
           animation: "slideIn 0.2s ease-out",

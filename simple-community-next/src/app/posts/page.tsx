@@ -70,7 +70,7 @@ export default async function PostsPage({
                 {currentPage > 1 && (
                   <Link
                     href={`/posts?page=${currentPage - 1}`}
-                    className="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                    className="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600"
                   >
                     ← 이전
                   </Link>
@@ -79,11 +79,11 @@ export default async function PostsPage({
                   <Link
                     key={p}
                     href={`/posts?page=${p}`}
-                    className={`px-3 py-2 text-sm font-medium rounded-md ${
-                      p === currentPage
-                        ? "text-white bg-indigo-600"
-                        : "text-gray-700 bg-white border border-gray-300 hover:bg-gray-50"
-                    }`}
+              className={`px-3 py-2 text-sm font-medium rounded-md ${
+                p === currentPage
+                  ? "text-white bg-indigo-600"
+                  : "text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600"
+              }`}
                   >
                     {p}
                   </Link>
@@ -91,7 +91,7 @@ export default async function PostsPage({
                 {currentPage < totalPages && (
                   <Link
                     href={`/posts?page=${currentPage + 1}`}
-                    className="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                    className="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600"
                   >
                     다음 →
                   </Link>

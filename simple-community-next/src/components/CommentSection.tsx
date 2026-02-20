@@ -33,10 +33,10 @@ export function CommentSection({
           ))}
         </div>
       ) : (
-        <div className="text-center py-12 bg-gray-50 rounded-lg">
+        <div className="text-center py-12 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
           <ChatBubbleLeftIcon className="mx-auto h-12 w-12 text-gray-400" />
-          <p className="mt-4 text-gray-500 text-lg">아직 댓글이 없습니다</p>
-          <p className="mt-2 text-gray-400 text-sm">첫 댓글을 작성해보세요!</p>
+          <p className="mt-4 text-gray-500 dark:text-gray-400 text-lg">아직 댓글이 없습니다</p>
+          <p className="mt-2 text-gray-400 dark:text-gray-500 text-sm">첫 댓글을 작성해보세요!</p>
         </div>
       )}
 
@@ -55,7 +55,7 @@ export function CommentSection({
               key={p}
               href={`/posts/${postId}?comments_page=${p}`}
               className={`px-3 py-2 text-sm font-medium rounded-md ${
-                p === commentsPage ? "text-white bg-indigo-600" : "text-gray-700 bg-white border border-gray-300 hover:bg-gray-50"
+                p === commentsPage ? "text-white bg-indigo-600" : "text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600"
               }`}
             >
               {p}
@@ -72,11 +72,11 @@ export function CommentSection({
         </div>
       )}
 
-      <div className="mt-8 sticky bottom-0 bg-white border-t-2 border-gray-200 pt-6">
+      <div className="mt-8 sticky bottom-0 bg-gray-50 dark:bg-gray-900 border-t-2 border-gray-200 dark:border-gray-700 pt-6">
         {user ? (
-          <div className="bg-white rounded-lg border-2 border-indigo-200 shadow-lg">
-            <div className="bg-gradient-to-r from-indigo-50 to-blue-50 px-6 py-3 border-b border-indigo-100">
-              <h3 className="text-lg font-semibold text-gray-800 flex items-center">
+          <div className="bg-white dark:bg-gray-800 rounded-lg border-2 border-indigo-200 dark:border-indigo-900 shadow-lg">
+            <div className="bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-indigo-900/30 dark:to-blue-900/30 px-6 py-3 border-b border-indigo-100 dark:border-indigo-800">
+              <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 flex items-center">
                 <PencilSquareIcon className="w-5 h-5 mr-2 text-indigo-600" />
                 댓글 작성
               </h3>
@@ -87,12 +87,12 @@ export function CommentSection({
                 name="body"
                 rows={4}
                 required
-                className="block w-full px-4 py-3 rounded-lg border-2 border-gray-300 placeholder-gray-400 focus:outline-none focus:border-indigo-500 sm:text-sm resize-none"
+                className="block w-full px-4 py-3 rounded-lg border-2 border-gray-300 dark:border-gray-600 placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:border-indigo-500 sm:text-sm resize-none"
                 placeholder="댓글을 입력하세요..."
               />
               <div className="flex items-center justify-between">
-                <p className="text-sm text-gray-500">
-                  <span className="font-medium text-gray-700">{user.emailAddress}</span> 님으로 댓글 작성
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  <span className="font-medium text-gray-700 dark:text-gray-300">{user.emailAddress}</span> 님으로 댓글 작성
                 </p>
                 <button
                   type="submit"
@@ -104,10 +104,10 @@ export function CommentSection({
             </form>
           </div>
         ) : (
-          <div className="p-8 bg-gradient-to-r from-indigo-50 via-blue-50 to-purple-50 rounded-lg border-2 border-indigo-200 shadow-md text-center">
+          <div className="p-8 bg-gradient-to-r from-indigo-50 via-blue-50 to-purple-50 dark:from-indigo-900/20 dark:via-blue-900/20 dark:to-purple-900/20 rounded-lg border-2 border-indigo-200 dark:border-indigo-800 shadow-md text-center">
             <LockClosedIcon className="mx-auto h-10 w-10 text-indigo-400 mb-4" />
-            <p className="text-gray-800 text-lg font-semibold mb-2">댓글을 작성하려면 로그인이 필요합니다</p>
-            <p className="text-gray-600 mb-4">로그인하고 다른 사용자들과 소통해보세요</p>
+            <p className="text-gray-800 dark:text-gray-200 text-lg font-semibold mb-2">댓글을 작성하려면 로그인이 필요합니다</p>
+            <p className="text-gray-600 dark:text-gray-400 mb-4">로그인하고 다른 사용자들과 소통해보세요</p>
             <div className="flex justify-center gap-3">
               <Link
                 href="/login"
@@ -117,7 +117,7 @@ export function CommentSection({
               </Link>
               <Link
                 href="/register"
-                className="inline-flex items-center px-5 py-2.5 border-2 border-indigo-600 text-sm font-medium rounded-lg text-indigo-600 bg-white hover:bg-indigo-50"
+                className="inline-flex items-center px-5 py-2.5 border-2 border-indigo-600 dark:border-indigo-500 text-sm font-medium rounded-lg text-indigo-600 dark:text-indigo-400 bg-white dark:bg-gray-800 hover:bg-indigo-50 dark:hover:bg-gray-700"
               >
                 회원가입
               </Link>
@@ -144,14 +144,14 @@ function CommentItem({
 
   return (
     <div className={`${depth > 0 ? "ml-8 mt-2" : ""}`}>
-      <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+      <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <p className="text-sm font-medium text-gray-900">{comment.user.emailAddress}</p>
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{comment.user.emailAddress}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
               {new Date(comment.createdAt).toLocaleString("ko-KR")}
             </p>
-            <p className="mt-2 text-gray-800 whitespace-pre-wrap">{comment.body}</p>
+            <p className="mt-2 text-gray-800 dark:text-gray-200 whitespace-pre-wrap">{comment.body}</p>
           </div>
           {user?.id === comment.userId && (
             <form action={deleteComment} className="ml-2">
@@ -170,7 +170,7 @@ function CommentItem({
           <button
             type="button"
             onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)}
-            className="mt-2 text-sm text-indigo-600 hover:text-indigo-700"
+            className="mt-2 text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300"
           >
             답글
           </button>
@@ -178,14 +178,14 @@ function CommentItem({
       </div>
 
       {replyingTo === comment.id && user && (
-        <form action={createComment} className="mt-2 ml-4 p-4 bg-white rounded-lg border border-indigo-200">
+        <form action={createComment} className="mt-2 ml-4 p-4 bg-white dark:bg-gray-800 rounded-lg border border-indigo-200 dark:border-indigo-800">
           <input type="hidden" name="post_id" value={postId} />
           <input type="hidden" name="parent_id" value={comment.id} />
           <textarea
             name="body"
             rows={3}
             required
-            className="block w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-indigo-500 text-sm"
+            className="block w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:border-indigo-500 text-sm"
             placeholder="답글을 입력하세요..."
           />
           <div className="mt-2 flex gap-2">
@@ -198,7 +198,7 @@ function CommentItem({
             <button
               type="button"
               onClick={() => setReplyingTo(null)}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+              className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600"
             >
               취소
             </button>

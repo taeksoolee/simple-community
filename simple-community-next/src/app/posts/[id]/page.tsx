@@ -55,11 +55,11 @@ export default async function PostPage({
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+      <div className="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-lg border border-gray-200 dark:border-gray-700">
         <div className="px-4 py-5 sm:px-6 flex justify-between items-start">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">{post.title}</h1>
-            <p className="mt-1 text-sm text-gray-500">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">{post.title}</h1>
+            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
               작성자: {post.user.emailAddress} |{" "}
               {new Date(post.createdAt).toLocaleString("ko-KR")}
             </p>
@@ -68,7 +68,7 @@ export default async function PostPage({
             <div className="flex space-x-2">
               <Link
                 href={`/posts/${post.id}/edit`}
-                className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                className="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
               >
                 <PencilSquareIcon className="w-4 h-4 mr-1" />
                 수정
@@ -80,20 +80,20 @@ export default async function PostPage({
             </div>
           )}
         </div>
-        <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
-          <div className="prose max-w-none whitespace-pre-wrap">{post.body}</div>
+        <div className="border-t border-gray-200 dark:border-gray-700 px-4 py-5 sm:px-6">
+          <div className="prose dark:prose-invert max-w-none whitespace-pre-wrap text-gray-900 dark:text-gray-200">{post.body}</div>
         </div>
       </div>
 
       <div className="mt-6">
-        <Link href="/posts" className="text-indigo-600 hover:text-indigo-500">
+        <Link href="/posts" className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300">
           ← 목록으로
         </Link>
       </div>
 
-      <div className="mt-8 border-t border-gray-200 pt-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">
-          댓글 <span className="text-indigo-600">{totalComments}</span>개
+      <div className="mt-8 border-t border-gray-200 dark:border-gray-700 pt-8">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">
+          댓글 <span className="text-indigo-600 dark:text-indigo-400">{totalComments}</span>개
         </h2>
         <CommentSection
           postId={post.id}
