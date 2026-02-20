@@ -11,6 +11,92 @@ import '../models/comment.dart';
 import '../providers/api_provider.dart';
 import '../providers/comments_provider.dart';
 import '../providers/post_detail_provider.dart';
+import '../providers/posts_provider.dart';
+
+Future<void> _showPostActions(
+  BuildContext context,
+  WidgetRef ref,
+  int postId,
+) async {
+  await showCupertinoModalPopup<void>(
+    context: context,
+    builder: (ctx) => CupertinoActionSheet(
+      actions: [
+        CupertinoActionSheetAction(
+          onPressed: () {
+            Navigator.of(ctx).pop();
+            context.push('/posts/$postId/edit');
+          },
+          child: const Text('수정'),
+        ),
+        CupertinoActionSheetAction(
+          isDestructiveAction: true,
+          onPressed: () {
+            Navigator.of(ctx).pop();
+            _deletePost(context, ref, postId);
+          },
+          child: const Text('삭제'),
+        ),
+      ],
+      cancelButton: CupertinoActionSheetAction(
+        isDefaultAction: true,
+        onPressed: () => Navigator.of(ctx).pop(),
+        child: const Text('취소'),
+      ),
+    ),
+  );
+}
+
+Future<void> _deletePost(
+  BuildContext context,
+  WidgetRef ref,
+  int postId,
+) async {
+  final confirmed = await showCupertinoDialog<bool>(
+    context: context,
+    builder: (ctx) => CupertinoAlertDialog(
+      title: const Text('게시글 삭제'),
+      content: const Text('정말 이 게시글을 삭제하시겠습니까?'),
+      actions: [
+        CupertinoDialogAction(
+          onPressed: () => Navigator.of(ctx).pop(false),
+          child: const Text('취소'),
+        ),
+        CupertinoDialogAction(
+          isDestructiveAction: true,
+          onPressed: () => Navigator.of(ctx).pop(true),
+          child: const Text('삭제'),
+        ),
+      ],
+    ),
+  );
+  if (confirmed != true) return;
+
+  try {
+    final client = ref.read(apiClientProvider);
+    await client.api.postsControllerRemove(id: postId);
+    if (context.mounted) {
+      ref.invalidate(postsListProvider);
+      context.go('/');
+    }
+  } catch (e) {
+    if (context.mounted) {
+      showCupertinoDialog(
+        context: context,
+        builder: (ctx) => CupertinoAlertDialog(
+          title: const Text('오류'),
+          content: Text('게시글 삭제 실패: ${parseApiError(e)}'),
+          actions: [
+            CupertinoDialogAction(
+              onPressed: () => Navigator.of(ctx).pop(),
+              child: const Text('확인'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+}
 
 class PostDetailScreen extends ConsumerWidget {
   final int postId;
@@ -33,8 +119,8 @@ class PostDetailScreen extends ConsumerWidget {
         middle: const Text('게시글', style: AppTheme.navBarTitleStyle),
         trailing: postAsync.valueOrNull != null && token != null
             ? AppTheme.navBarIconButton(
-                icon: CupertinoIcons.pencil,
-                onPressed: () => context.push('/posts/$postId/edit'),
+                icon: CupertinoIcons.ellipsis,
+                onPressed: () => _showPostActions(context, ref, postId),
               )
             : null,
       ),
@@ -258,7 +344,7 @@ class _CommentTile extends ConsumerWidget {
                 if (token != null)
                   CupertinoButton(
                     padding: EdgeInsets.zero,
-                    onPressed: () => _deleteComment(ref),
+                    onPressed: () => _deleteComment(context, ref),
                     child: Icon(CupertinoIcons.delete, size: 18, color: CupertinoColors.systemGrey),
                   ),
               ],
@@ -278,8 +364,51 @@ class _CommentTile extends ConsumerWidget {
     );
   }
 
-  Future<void> _deleteComment(WidgetRef ref) async {
-    // TODO
+  Future<void> _deleteComment(BuildContext context, WidgetRef ref) async {
+    final confirmed = await showCupertinoDialog<bool>(
+      context: context,
+      builder: (ctx) => CupertinoAlertDialog(
+        title: const Text('댓글 삭제'),
+        content: const Text('정말 이 댓글을 삭제하시겠습니까?'),
+        actions: [
+          CupertinoDialogAction(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: const Text('취소'),
+          ),
+          CupertinoDialogAction(
+            isDestructiveAction: true,
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: const Text('삭제'),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true) return;
+
+    try {
+      final client = ref.read(apiClientProvider);
+      await client.api.commentsControllerRemove(
+        postId: postId,
+        id: comment.id,
+      );
+      ref.invalidate(commentsListProvider(postId));
+    } catch (e) {
+      if (context.mounted) {
+        showCupertinoDialog(
+          context: context,
+          builder: (ctx) => CupertinoAlertDialog(
+            title: const Text('오류'),
+            content: Text('댓글 삭제 실패: ${parseApiError(e)}'),
+            actions: [
+              CupertinoDialogAction(
+                onPressed: () => Navigator.of(ctx).pop(),
+                child: const Text('확인'),
+              ),
+            ],
+          ),
+        );
+      }
+    }
   }
 }
 
