@@ -1,0 +1,17 @@
+<%# 재사용 가능한 플래시 메시지
+  locals: type (:notice | :alert), message, auto_delay (ms, nil이면 type에 따라 기본값)
+-%>
+<% auto_delay ||= (type == :notice ? 5000 : 0) %>
+<div class="w-full"
+     data-controller="dismiss"
+     data-dismiss-auto-delay-value="<%= auto_delay %>">
+  <div class="flex items-start gap-3 rounded-lg border <%= type == :alert ? 'border-red-200' : 'border-green-200' %> bg-white/95 backdrop-blur px-4 py-3 shadow-lg shadow-gray-200/50">
+    <p class="flex-1 text-sm font-medium <%= type == :alert ? 'text-red-800' : 'text-green-800' %>"><%= message %></p>
+    <button type="button"
+            data-action="click->dismiss#close"
+            class="flex-shrink-0 p-1 rounded-md <%= type == :alert ? 'text-red-500 hover:bg-red-50' : 'text-green-600 hover:bg-green-50' %> transition-colors"
+            aria-label="닫기">
+      <%= heroicon "x-mark", variant: :outline, options: { class: "w-4 h-4" } %>
+    </button>
+  </div>
+</div>
