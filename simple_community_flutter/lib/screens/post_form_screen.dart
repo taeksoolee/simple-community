@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simple_community_api/simple_community_api.dart';
@@ -17,12 +17,12 @@ class PostFormScreen extends ConsumerStatefulWidget {
 }
 
 class _PostFormScreenState extends ConsumerState<PostFormScreen> {
-  final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _bodyController = TextEditingController();
   bool _isLoading = false;
   String? _error;
-
+  String? _titleError;
+  String? _bodyError;
   bool _loaded = false;
 
   void _loadPost(Post post) {
@@ -40,8 +40,18 @@ class _PostFormScreenState extends ConsumerState<PostFormScreen> {
     super.dispose();
   }
 
+  bool _validate() {
+    final title = _titleController.text.trim();
+    final body = _bodyController.text.trim();
+    setState(() {
+      _titleError = title.isEmpty ? '제목을 입력해주세요' : null;
+      _bodyError = body.isEmpty ? '본문을 입력해주세요' : null;
+    });
+    return _titleError == null && _bodyError == null;
+  }
+
   Future<void> _submit() async {
-    if (!_formKey.currentState!.validate()) return;
+    if (!_validate()) return;
     setState(() {
       _isLoading = true;
       _error = null;
@@ -62,9 +72,7 @@ class _PostFormScreenState extends ConsumerState<PostFormScreen> {
             ..body = _bodyController.text.trim()),
         );
       }
-      if (mounted) {
-        context.go('/');
-      }
+      if (mounted) context.go('/');
     } catch (e) {
       setState(() {
         _error = e.toString().replaceFirst('Exception: ', '');
@@ -87,67 +95,87 @@ class _PostFormScreenState extends ConsumerState<PostFormScreen> {
     final postAsync = isEdit ? ref.watch(postDetailProvider(widget.postId!)) : null;
 
     if (isEdit && postAsync != null && postAsync.isLoading) {
-      return Scaffold(
-        appBar: AppBar(title: const Text('게시글 수정')),
-        body: const Center(child: CircularProgressIndicator()),
+      return CupertinoPageScaffold(
+        navigationBar: const CupertinoNavigationBar(
+          border: null,
+          middle: Text('게시글 수정', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17)),
+        ),
+        child: const Center(child: CupertinoActivityIndicator(radius: 14)),
       );
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(isEdit ? '게시글 수정' : '글쓰기'),
-        actions: [
-          TextButton(
-            onPressed: _isLoading ? null : _submit,
-            child: _isLoading
-                ? const SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
-                : Text(isEdit ? '저장' : '등록'),
-          ),
-        ],
+    return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
+        border: null,
+        leading: CupertinoButton(
+          padding: EdgeInsets.zero,
+          onPressed: () => context.pop(),
+          child: const Text('취소'),
+        ),
+        middle: Text(
+          isEdit ? '게시글 수정' : '글쓰기',
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+        ),
+        trailing: CupertinoButton(
+          padding: EdgeInsets.zero,
+          onPressed: _isLoading ? null : _submit,
+          child: _isLoading
+              ? const CupertinoActivityIndicator(radius: 10)
+              : Text(isEdit ? '저장' : '등록'),
+        ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
+      child: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              TextFormField(
+              CupertinoTextField(
                 controller: _titleController,
-                decoration: const InputDecoration(
-                  labelText: '제목',
-                  hintText: '제목을 입력하세요',
-                  border: OutlineInputBorder(),
+                placeholder: '제목을 입력하세요',
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                decoration: BoxDecoration(
+                  color: CupertinoColors.tertiarySystemFill.resolveFrom(context),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                validator: (v) =>
-                    v == null || v.isEmpty ? '제목을 입력해주세요' : null,
               ),
-              const SizedBox(height: 16),
-              TextFormField(
+              if (_titleError != null) ...[
+                const SizedBox(height: 6),
+                Text(_titleError!, style: const TextStyle(fontSize: 13, color: CupertinoColors.systemRed)),
+              ],
+              const SizedBox(height: 20),
+              CupertinoTextField(
                 controller: _bodyController,
-                maxLines: 10,
-                decoration: const InputDecoration(
-                  labelText: '본문',
-                  hintText: '본문을 입력하세요',
-                  border: OutlineInputBorder(),
-                  alignLabelWithHint: true,
+                placeholder: '본문을 입력하세요',
+                maxLines: 12,
+                minLines: 8,
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                decoration: BoxDecoration(
+                  color: CupertinoColors.tertiarySystemFill.resolveFrom(context),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                validator: (v) =>
-                    v == null || v.isEmpty ? '본문을 입력해주세요' : null,
               ),
+              if (_bodyError != null) ...[
+                const SizedBox(height: 6),
+                Text(_bodyError!, style: const TextStyle(fontSize: 13, color: CupertinoColors.systemRed)),
+              ],
               if (_error != null) ...[
-                const SizedBox(height: 16),
+                const SizedBox(height: 20),
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: Colors.red.shade50,
-                    borderRadius: BorderRadius.circular(8),
+                    color: CupertinoColors.systemRed.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Text(_error!, style: TextStyle(color: Colors.red[700])),
+                  child: Row(
+                    children: [
+                      const Icon(CupertinoIcons.exclamationmark_circle_fill, color: CupertinoColors.systemRed, size: 22),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(_error!, style: const TextStyle(color: CupertinoColors.systemRed, fontSize: 14)),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ],
