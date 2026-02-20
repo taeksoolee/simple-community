@@ -9,6 +9,7 @@ import 'package:simple_community_api/simple_community_api.dart';
 import '../models/post.dart';
 import '../providers/api_provider.dart';
 import '../providers/post_detail_provider.dart';
+import '../providers/posts_provider.dart';
 
 class PostFormScreen extends ConsumerStatefulWidget {
   final int? postId;
@@ -75,7 +76,10 @@ class _PostFormScreenState extends ConsumerState<PostFormScreen> {
             ..body = _bodyController.text.trim()),
         );
       }
-      if (mounted) context.go('/');
+      if (mounted) {
+        ref.invalidate(postsListProvider);
+        context.go('/');
+      }
     } catch (e) {
       setState(() {
         _error = parseApiError(e);
