@@ -29,7 +29,7 @@ export default async function PostsPage({
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">게시글 목록</h1>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">게시글 목록</h1>
         {user && (
           <Link
             href="/posts/new"
@@ -40,25 +40,25 @@ export default async function PostsPage({
         )}
       </div>
 
-      <div className="bg-white shadow overflow-hidden sm:rounded-md">
+      <div className="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-md border border-gray-200 dark:border-gray-700">
         {posts.length > 0 ? (
           <>
-            <ul className="divide-y divide-gray-200">
+            <ul className="divide-y divide-gray-200 dark:divide-gray-700">
               {posts.map((post) => (
                 <li key={post.id}>
                   <Link
                     href={`/posts/${post.id}`}
-                    className="block hover:bg-gray-50 px-4 py-4 sm:px-6"
+                    className="block hover:bg-gray-50 dark:hover:bg-gray-700 px-4 py-4 sm:px-6"
                   >
                     <div className="flex items-center justify-between">
-                      <p className="text-lg font-medium text-indigo-600 truncate">
+                      <p className="text-lg font-medium text-indigo-600 dark:text-indigo-400 truncate">
                         {post.title}
                       </p>
                       <p className="ml-2 px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                         {new Date(post.createdAt).toLocaleString("ko-KR")}
                       </p>
                     </div>
-                    <p className="mt-2 text-sm text-gray-500">
+                    <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
                       작성자: {post.user.emailAddress}
                     </p>
                   </Link>
@@ -101,10 +101,10 @@ export default async function PostsPage({
           </>
         ) : (
           <div className="text-center py-12">
-            <p className="text-gray-500">아직 게시글이 없습니다</p>
+            <p className="text-gray-500 dark:text-gray-400">아직 게시글이 없습니다</p>
             {user && (
               <p className="mt-2">
-                <Link href="/posts/new" className="text-indigo-600 hover:text-indigo-500">
+                <Link href="/posts/new" className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300">
                   첫 게시글 작성하기
                 </Link>
               </p>
