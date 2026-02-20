@@ -4,14 +4,14 @@
       <div>
         <h1 class="text-3xl font-bold text-gray-900"><%= @post.title %></h1>
         <p class="mt-1 text-sm text-gray-500">
-          작성자: <%= @post.user.email_address %> | 
+          작성자: <%= @post.user.email_address %> |
           <%= @post.created_at.strftime('%Y-%m-%d %H:%M') %>
         </p>
       </div>
       <% if Current.user == @post.user %>
         <div class="flex space-x-2">
           <%= link_to "수정", edit_post_path(@post), class: "inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" %>
-          <%= button_to "삭제", post_path(@post), method: :delete, data: { confirm: "정말 삭제하시겠습니까?" }, 
+          <%= button_to "삭제", post_path(@post), method: :delete, data: { confirm: "정말 삭제하시겠습니까?" },
               class: "inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700" %>
         </div>
       <% end %>
@@ -34,7 +34,6 @@
       </h2>
     </div>
 
-    <!-- 댓글 목록 -->
     <div id="comments" class="mb-8">
       <% top_level_comments = @post.comments.where(commentable_type: "Post").includes(:user, :comments).order(created_at: :asc) %>
       <% if top_level_comments.any? %>
@@ -45,38 +44,33 @@
         </div>
       <% else %>
         <div class="text-center py-12 bg-gray-50 rounded-lg">
-          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-          </svg>
+          <%= heroicon "chat-bubble-left", variant: :outline, options: { class: "mx-auto h-12 w-12 text-gray-400" } %>
           <p class="mt-4 text-gray-500 text-lg">아직 댓글이 없습니다</p>
           <p class="mt-2 text-gray-400 text-sm">첫 댓글을 작성해보세요!</p>
         </div>
       <% end %>
     </div>
 
-    <!-- 댓글 작성 폼 (하단에 고정) -->
     <div class="sticky bottom-0 bg-white border-t-2 border-gray-200 pt-6">
       <% if Current.user %>
         <div class="bg-white rounded-lg border-2 border-indigo-200 shadow-lg" data-controller="form">
           <div class="bg-gradient-to-r from-indigo-50 to-blue-50 px-6 py-3 border-b border-indigo-100">
             <h3 class="text-lg font-semibold text-gray-800 flex items-center">
-              <svg class="w-5 h-5 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
-              </svg>
+              <%= heroicon "pencil-square", variant: :outline, options: { class: "w-5 h-5 mr-2 text-indigo-600" } %>
               댓글 작성
             </h3>
           </div>
           <%= form_with url: comments_path, method: :post, class: "p-6 space-y-4", data: { action: "submit->form#handleSubmit" } do |form| %>
             <%= hidden_field_tag "comment[commentable_type]", "Post" %>
             <%= hidden_field_tag "comment[commentable_id]", @post.id %>
-            
+
             <div>
               <%= text_area_tag "comment[body]", nil, rows: 4,
                   class: "block w-full px-4 py-3 rounded-lg border-2 border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200 sm:text-sm resize-none",
                   placeholder: "댓글을 입력하세요... (Ctrl+Enter로 전송)",
                   data: { form_target: "body", action: "blur->form#validateRequired input->form#clearErrorOnInput" } %>
             </div>
-            
+
             <div class="flex items-center justify-between">
               <p class="text-sm text-gray-500">
                 <span class="font-medium text-gray-700"><%= Current.user.email_address %></span>
@@ -88,9 +82,7 @@
         </div>
       <% else %>
         <div class="p-8 bg-gradient-to-r from-indigo-50 via-blue-50 to-purple-50 rounded-lg border-2 border-indigo-200 shadow-md text-center">
-          <svg class="mx-auto h-12 w-12 text-indigo-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-          </svg>
+          <%= heroicon "lock-closed", variant: :outline, options: { class: "mx-auto h-10 w-10 text-indigo-400 mb-4" } %>
           <p class="text-gray-800 text-lg font-semibold mb-2">
             댓글을 작성하려면 로그인이 필요합니다
           </p>
